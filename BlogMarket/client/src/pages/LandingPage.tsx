@@ -1,7 +1,7 @@
 
 const LandingPage = () => {
   return (
-    <div>LandingPage</div>
+    <main className="mt-20">LandingPage</main>
   )
 }
 
