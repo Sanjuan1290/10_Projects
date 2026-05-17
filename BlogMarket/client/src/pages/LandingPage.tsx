@@ -2,8 +2,6 @@ import { useBlogStore } from "../stores/useBLogStore"
 
 const LandingPage = () => {
 
-  const { blogs } = useBlogStore()
-
   return (
     <main className="mt-20">
 
