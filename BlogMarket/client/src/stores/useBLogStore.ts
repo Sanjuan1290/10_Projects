@@ -14,7 +14,8 @@ type Blog = {
     description: string,
     author: string,
     categories: string[],
-    comments: Comment[]
+    comments: Comment[],
+    viewCount: number,
     createdAt: string,
     updatedAt: string,
 }
@@ -30,5 +31,5 @@ export const useBlogStore = create<BlogStore>((set) => ({
     searchInput: '',
     setSearchInput: (searchInput) => set(() => ({
         searchInput
-    }))
+    })),
 }))
