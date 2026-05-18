@@ -60,7 +60,7 @@ export const login = async(req, res) => {
         }
         
         const user = rows[0]
-        const isPasswordMatch = bcrypt.compare(user.password, password)
+        const isPasswordMatch = await bcrypt.compare(password, user.password)
 
         if (!isPasswordMatch) {
         return res.status(400).json({
@@ -76,6 +76,15 @@ export const login = async(req, res) => {
             sameSite: "lax",
             maxAge: 1 * 24 * 60 * 60 * 1000
         });
+
+        res.status(200).json({
+            message: "Login successful",
+            user: {
+                id: user.id,
+                username: user.username,
+                email: user.email
+            }
+        })
     }catch(err){
         console.log(err);
 
