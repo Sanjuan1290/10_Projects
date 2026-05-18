@@ -24,3 +24,10 @@ export type Blog = {
     createdAt: string,
     updatedAt: string,
 }
+
+export type User = {
+    id: number,
+    username: string,
+    email: string,
+    createdAt: string
+}

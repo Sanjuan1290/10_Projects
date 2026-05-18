@@ -3,6 +3,7 @@ dotenv.config()
 
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import { db } from './db/connect.js'
 
 import blogsRouter from './routers/blogsRouter.js'
@@ -12,6 +13,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 
 app.use("/api/v1", blogsRouter)
 const port = process.env.PORT || 3000
