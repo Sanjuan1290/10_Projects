@@ -4,6 +4,6 @@ import express from "express";
 
 const blogsRouter = express.Router()
 
-blogsRouter.get('/getAllBlogs', getAllBlogs)
+blogsRouter.get('/', getAllBlogs)
 
 export default blogsRouter

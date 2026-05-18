@@ -1,5 +1,5 @@
-import { db } from "../db/connect"
-import generateToken from '../utils/generateToken'
+import { db } from "../db/connect.js"
+import generateToken from '../utils/generateToken.js'
 import bcrypt from 'bcrypt'
 
 export const register = async(req, res) => {
