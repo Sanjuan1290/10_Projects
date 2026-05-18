@@ -6,10 +6,8 @@ const Header = () => {
 
     const { searchInput, setSearchInput } = useBlogStore()
 
-    console.log(searchInput);
-
     return (
-        <header className="fixed top-0 left-0 right-0 flex justify-between py-4 px-[20px] bg-[rgba(0,0,0,0.42)]">
+        <header className="fixed top-0 left-0 right-0 flex justify-between py-4 px-[20px] bg-white border border-b-gray-100">
             <h3 className="font-bold text-xl">Blog Market</h3>
 
             <div className="flex items-center gap-1"> 

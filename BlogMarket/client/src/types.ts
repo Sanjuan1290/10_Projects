@@ -2,18 +2,24 @@
 
 export type Comment = {
     id: string,
+    blogId: number
     userName: string,
     message: string,
     createdAt: string
 }
 
+export type Categories = {
+    id: number,
+    blogId: number,
+    category: string
+}
+
 export type Blog = {
-    id: string,
+    id: number,
     title: string,
     description: string,
+    image: string,
     author: string,
-    categories: string[],
-    comments: Comment[],
     viewCount: number,
     createdAt: string,
     updatedAt: string,
