@@ -1,6 +1,7 @@
 import { db } from "../db/connect.js"
-import generateToken from '../utils/generateToken.js'
+import generateToken from "../utils/generateToken.js"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 export const register = async(req, res) => {
     try{
@@ -45,5 +46,40 @@ export const register = async(req, res) => {
 }
 
 export const login = async(req, res) => {
+    try{
+        const { email, password } = req.body
+
+        if(!email || !password) return res.status(400).json({ message: "All fields are required!" })
+
+        const [rows] = await db.query("SELECT * FROM users WHERE email = ?", [email])
+
+        if (rows.length === 0) {
+        return res.status(400).json({
+            message: "Invalid credentials"
+        });
+        }
+        
+        const user = rows[0]
+        const isPasswordMatch = bcrypt.compare(user.password, password)
+
+        if (!isPasswordMatch) {
+        return res.status(400).json({
+            message: "Wrong Password. Try again."
+        });
+        }
+
+        const token = generateToken(user.id)
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false, // true in production with HTTPS
+            sameSite: "lax",
+            maxAge: 1 * 24 * 60 * 60 * 1000
+        });
+    }catch(err){
+        console.log(err);
+
+        res.status(500).json({ message: "Internal Server Error" })
+    }
     
 }
