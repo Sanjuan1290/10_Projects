@@ -22,7 +22,7 @@ export const register = async(req, res) => {
 
         console.log(result);
 
-        const token = generateToken(result.id)
+        const token = generateToken(result.insertId)
 
         res.cookie("token", token, {
             httpOnly: true,

@@ -8,7 +8,9 @@ const LandingPage = () => {
   const { searchInput } = useBlogStore()
 
   const fetchBlogs = async () => {
-    const res = await fetch('http://localhost:3000/api/v1/blogs')
+    const res = await fetch('http://localhost:3000/api/v1/blogs', {
+      credentials: 'include'
+    })
 
     return res.json()
   }

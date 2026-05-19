@@ -1,14 +1,18 @@
 import { IoIosSearch } from "react-icons/io";
 import { NavLink } from "react-router-dom";
 import { useBlogStore } from '../stores/useBLogStore'
+import useCurrentUser from "../utils/useCurrentUser";
 
 const Header = () => {
 
     const { searchInput, setSearchInput } = useBlogStore()
+    const { data, isLoading } = useCurrentUser()
+
+    console.log(data);
 
     return (
         <header className="fixed top-0 left-0 right-0 flex justify-between py-4 px-[20px] bg-white border border-b-gray-100">
-            <h3 className="font-bold text-xl">Blog Market</h3>
+            <NavLink to={'/'} className="font-bold text-xl">Blog Market</NavLink>
 
             <div className="flex items-center gap-1"> 
                 <label htmlFor="searchPost"><IoIosSearch className="h-6 w-6 cursor-pointer"/></label>
@@ -21,11 +25,18 @@ const Header = () => {
                     className="outline-none px-2"
                 />
             </div>
- 
-            <div className="flex gap-2 ">
-                <NavLink to={'/login'} className={'hover:text-gray-500'}>Login</NavLink>
-                <NavLink to={'/register'} className={'hover:text-gray-500'}>Register</NavLink>
-            </div>
+
+            {
+                isLoading ? <p>Loading...</p> 
+                : 
+                data?.isLoggedIn ? <p>{data.user.username}</p>
+                :
+                <div className="flex gap-2 ">
+                    <NavLink to={'/login'} className={'hover:text-gray-500'}>Login</NavLink>
+                    <NavLink to={'/register'} className={'hover:text-gray-500'}>Register</NavLink>
+                </div>
+            }
+
         </header>
     )
 }

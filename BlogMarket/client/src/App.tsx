@@ -3,6 +3,7 @@ import MainLayout from "./layouts/MainLayout"
 import LandingPage from "./pages/LandingPage"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import UserProtectedRoute from "./auth/UserProtectedRoute"
 
 
 const App = () => {
@@ -12,8 +13,17 @@ const App = () => {
     <Route path="/" element={<MainLayout />}>
       <Route index element={<LandingPage />} />
       
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={
+        <UserProtectedRoute>
+            <Login />
+        </UserProtectedRoute>
+      } />
+
+      <Route path="/register" element={
+        <UserProtectedRoute>
+          <Register />
+        </UserProtectedRoute>
+        } />
     </Route>
   ))
 
