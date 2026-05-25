@@ -15,3 +15,22 @@ export const getAllBlogs = async (req, res) => {
         })
     }
 }
+
+export const getSingleBlog = async(req, res) => {
+    const { id } = req.params
+
+    const [blogs] = await db.query("SELECT * FROM blogs WHERE id = ?", [id])
+
+    if(blogs.length === 0) return res.status(404).json({ message: 'No Blogs Found!'})
+    
+    const [categories] = await db.query("SELECT * FROM categories WHERE blogId = ?", [id])
+    const [comments] = await db.query("SELECT * FROM comments WHERE blogId = ?", [id])
+    
+
+    res.status(200).json({ 
+        message: `Successfully Get a blog ID: ${id}`,
+        blog: blogs[0],
+        categories,
+        comments
+    })
+}

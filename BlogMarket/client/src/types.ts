@@ -8,7 +8,7 @@ export type Comment = {
     createdAt: string
 }
 
-export type Categories = {
+export type Category = {
     id: number,
     blogId: number,
     category: string
