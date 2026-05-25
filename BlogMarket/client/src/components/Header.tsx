@@ -1,4 +1,5 @@
 import { IoIosSearch } from "react-icons/io";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { NavLink } from "react-router-dom";
 import { useBlogStore } from '../stores/useBLogStore'
 import useCurrentUser from "../utils/useCurrentUser";
@@ -7,7 +8,7 @@ const Header = () => {
 
     const { searchInput, setSearchInput } = useBlogStore()
     const { data, isLoading } = useCurrentUser()
-
+ 
     console.log(data);
 
     return (
@@ -29,7 +30,13 @@ const Header = () => {
             {
                 isLoading ? <p>Loading...</p> 
                 : 
-                data?.isLoggedIn ? <p>{data.user.username}</p>
+                data?.isLoggedIn ? <NavLink 
+                to={'/writeBlog'}
+                className={'flex gap-1 items-center hover:text-gray-600'}
+                >
+                    <p>Write</p> 
+                    <GiHamburgerMenu className="w-4 h-4"/>
+                </NavLink>
                 :
                 <div className="flex gap-2 ">
                     <NavLink to={'/login'} className={'hover:text-gray-500'}>Login</NavLink>
