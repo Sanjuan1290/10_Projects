@@ -10,6 +10,7 @@ import validatingCookie from './utils/validatingCookie.js'
 
 import blogsRouter from './routers/blogsRouter.js'
 import userRouter from './routers/userRouter.js'
+import commentRouter from './routers/commentRouter.js'
 
 
 const app = express()
@@ -22,8 +23,9 @@ app.use(express.json())
 app.use(cookieParser())
 
 app.get('/api/v1/validateCookies', validatingCookie)
-app.use("/api/v1/blogs", blogsRouter)
 app.use('/api/v1/user', userRouter)
+app.use("/api/v1/blogs", blogsRouter)
+app.use("/api/v1/comment", commentRouter)
 
 const port = process.env.PORT || 3000
 

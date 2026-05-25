@@ -3,18 +3,23 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import type { Category, Comment, Blog as BlogType} from '../types'
+import useCurrentUser from "../utils/useCurrentUser";
+import { useState } from "react";
 
 
 
 const Blog = () => {
-    const { id } = useParams()
+    const user = useCurrentUser().data?.user
+    const [commentMessage, setCommentMessage] = useState('')
+
+    const { id: blogId } = useParams()
     const fetchBlog = async () => {
-        const res = await fetch(`http://localhost:3000/api/v1/blogs/${id}`)
+        const res = await fetch(`http://localhost:3000/api/v1/blogs/${blogId}`)
 
         return res.json()
     }
 
-    const { data , isLoading, error } = useQuery({ queryKey:[`blog${id}`], queryFn: fetchBlog })
+    const { data , isLoading, error, refetch: refetchBlog } = useQuery({ queryKey:[`blog${blogId}`], queryFn: fetchBlog })
 
     if(isLoading) return <p>Blog Loading...</p> 
     if(error) return <p>Something went wrong</p>
@@ -23,8 +28,19 @@ const Blog = () => {
     const categories = data?.categories as Category[]
     const comments = data?.comments as Comment[]
 
-    console.log(categories);
-    console.log(comments);
+    const addComment = async () => {
+        await fetch('http://localhost:3000/api/v1/comment/add', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ blogId, userId: user.id, commentMessage })
+        })
+
+        setCommentMessage('')
+        refetchBlog()
+    }
+
 
     return (
         <div className="flex flex-col gap-4 mt-20  px-4">
@@ -79,15 +95,20 @@ const Blog = () => {
                                     <p>{new Date(comment.createdAt).toLocaleString("en-US", {hour: '2-digit', minute: '2-digit', second: '2-digit'})}</p>
                                 </div>
                             </div>
-                            <p className="ml-8">I am very hopeful about this!</p>
+                            <p className="ml-8">{comment.message}</p>
                         </div>
                     ))
                 }
             </div>
             
             <div className="flex justify-between text-sm mb-10">
-                <input type="text"  placeholder="Write a comment" className="flex-1 px-4 outline-none"/>
-                <button className="bg-black text-gray-200 px-8 py-2 hover:bg-gray-800 duration-300">Add Comment</button>
+                <input 
+                type="text"  
+                placeholder="Write a comment" 
+                onChange={e => {setCommentMessage(e.target.value)}}
+                value={commentMessage}
+                className="flex-1 px-4 outline-none"/>
+                <button onClick={addComment} className="bg-black text-gray-200 px-8 py-2 hover:bg-gray-800 duration-300">Add Comment</button>
             </div>
         </div>
     )
