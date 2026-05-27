@@ -1,15 +1,38 @@
 import { IoIosSearch } from "react-icons/io";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useBlogStore } from '../stores/useBLogStore'
 import useCurrentUser from "../utils/useCurrentUser";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const Header = () => {
 
     const { searchInput, setSearchInput } = useBlogStore()
     const { data, isLoading } = useCurrentUser()
     const [showMenu, setShowMenu] = useState(false)
+    const navigate = useNavigate()
+    const queryClient = useQueryClient()
+
+    const logoutMutation = useMutation({
+        mutationFn: async () => {
+            const res = await fetch('http://localhost:3000/api/v1/user/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
+            const data = await res.json()
+
+            if(!res.ok){
+                throw new Error(data.message || 'Failed to Log out')
+            }
+
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['token']})
+            navigate('/')
+        }
+    })
  
     console.log(data);
 
@@ -44,7 +67,7 @@ const Header = () => {
                             <NavLink to={'/profile'} className={'hover:text-gray-600 duration-200'}>Profile</NavLink>
                             <NavLink to={'/blog/write'} className={'hover:text-gray-600 duration-200'}>Write</NavLink>
                             <NavLink to={'/myblogs'} className={'hover:text-gray-600 duration-200'}>My blogs</NavLink>
-                            <button className={'hover:text-gray-600 duration-200'}>Logout</button>
+                            <button onClick={()=>{logoutMutation.mutate()}} className={'hover:text-gray-600 duration-200'}>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</button>
                         </div>
                     }
                 </div>
