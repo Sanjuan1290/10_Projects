@@ -34,3 +34,26 @@ export const getSingleBlog = async(req, res) => {
         comments
     })
 }
+
+export const addBlog = async (req, res) => {
+    const { userId, title, image, author, categories, description } = req.body
+
+    if(!title || !image || categories?.length === 0 || !description) return res.status(400).json({ message: 'All Input fields are requred!'})
+
+    const [result] = await db.query(
+        `INSERT INTO blogs (userId, title, description, image, author, viewCount) 
+        VALUES (?,?,?,?,?,?)`,
+        [userId, title, description, image, author, 0 ]
+    )
+
+    for(const category of categories){
+        await db.query(`
+            INSERT INTO categories (blogId, category) 
+            VALUES (?,?)`, 
+            [result.insertId, category]
+        )
+    }
+
+    res.status(200).json({ message: "Successfully Create a Blog"})
+
+}

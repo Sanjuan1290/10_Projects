@@ -31,7 +31,7 @@ const Header = () => {
                 isLoading ? <p>Loading...</p> 
                 : 
                 data?.isLoggedIn ? <NavLink 
-                to={'/writeBlog'}
+                to={'/blog/write'}
                 className={'flex gap-1 items-center hover:text-gray-600'}
                 >
                     <p>Write</p> 
