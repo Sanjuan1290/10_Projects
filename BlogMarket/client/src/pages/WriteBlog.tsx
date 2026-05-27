@@ -8,13 +8,10 @@ const WriteBlog = () => {
     const [inputTitle, setInputTitle] = useState('')
     const [inputImage, setInputImage] = useState<File | null>(null)
     const [inputCategory, setInputCategory] = useState('')
-
     const [inputCategories, setInputCategories] = useState<string[]>([])
     const [inputDescription, setInputDescription] = useState('')
 
     const currentUser = useCurrentUser().data?.user
-
-    console.log(currentUser);
 
     const addBlogPostMutation = useMutation({
         mutationFn: async() => {
