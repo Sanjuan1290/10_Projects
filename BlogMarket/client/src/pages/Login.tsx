@@ -17,8 +17,13 @@ const Login = () => {
             },
             body: JSON.stringify({ email, password })
         })
+        const data = await res.json()
 
-        return res.json()
+        if(!res.ok) {
+            throw new Error(data.message || 'Login failed')
+        }
+
+        return data
     }
 
     const mutation = useMutation({
@@ -60,7 +65,7 @@ const Login = () => {
             <button disabled={mutation.isPending} className="bg-black text-gray-50 font-bold py-3 rounded-md hover:bg-gray-500 hover:text-gray-900 duration-100">{mutation.isPending ? 'Logging In...' : 'Log in'}</button>
 
             {mutation.isError && (
-                <p>{(mutation.error as Error).message}</p>
+                <p className="text-rose-600 font-semibold text-center">{(mutation.error as Error).message}</p>
             )}
 
             <p className="text-center">New here? <NavLink to={'/register'} className={'text-gray-700 hover:text-gray-500'}>Register</NavLink></p>

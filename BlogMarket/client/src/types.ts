@@ -1,8 +1,9 @@
 
 
 export type Comment = {
-    id: string,
-    blogId: number
+    id: number,
+    blogId: number,
+    userId: number,
     userName: string,
     message: string,
     createdAt: string

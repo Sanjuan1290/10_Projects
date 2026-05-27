@@ -55,7 +55,7 @@ export const login = async(req, res) => {
 
         if (rows.length === 0) {
         return res.status(400).json({
-            message: "Invalid credentials"
+            message: "Email does not Exists."
         });
         }
         
