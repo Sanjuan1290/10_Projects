@@ -15,7 +15,11 @@ const LandingPage = () => {
     return res.json()
   }
 
-  const { data: blogs, isLoading, error } = useQuery<Blog[]>({ queryKey: ['blogs'], queryFn: fetchBlogs })
+  const { data: blogs, isLoading, error } = useQuery<Blog[]>({ 
+    queryKey: ['blogs'], 
+    queryFn: fetchBlogs,
+    staleTime: 1000 * 60 * 5
+  })
 
   const filteredBlogs = blogs?.filter(blog => (blog.title.toLowerCase().includes(searchInput.toLowerCase())))
   
@@ -44,10 +48,14 @@ const LandingPage = () => {
 
               <div className="flex justify-between text-gray-600 text-sm">
                 <p>@{blog.author}</p>
-                <p>{blog.createdAt}</p>
+                <p>{new Date(blog.createdAt).toDateString()} {new Date(blog.createdAt).toLocaleString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+                })}</p>
               </div>
-
-              <p className="line-clamp-3">{blog.description} lorem <NavLink to={`blog/${blog.id}`} className={'hover:text-gray-500'}>Read more</NavLink></p>
+ 
+              <p className="line-clamp-3">{blog.description} lorem <NavLink to={`/blog/${blog.id}`} className={'hover:text-gray-500'}>Read more</NavLink></p>
 
             </div>
           </div>

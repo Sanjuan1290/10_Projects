@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import useCurrentUser from "../utils/useCurrentUser"
 import uploadToCloudinary from "../utils/uploadToCloudinary"
+import { Navigate } from "react-router-dom"
 
 const WriteBlog = () => {
 
@@ -12,6 +13,10 @@ const WriteBlog = () => {
     const [inputDescription, setInputDescription] = useState('')
 
     const currentUser = useCurrentUser().data?.user
+
+    if(!currentUser){
+        return <Navigate to={'/'}/>
+    }
 
     const addBlogPostMutation = useMutation({
         mutationFn: async() => {

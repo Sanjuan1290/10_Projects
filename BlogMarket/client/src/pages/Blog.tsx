@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useNavigate, useParams, NavLink } from "react-router-dom";
+import { useNavigate, useParams, NavLink, Navigate } from "react-router-dom";
 import type { Category, Comment, Blog as BlogType} from '../types'
 import useCurrentUser from "../utils/useCurrentUser";
 import { useState } from "react";
@@ -13,6 +13,10 @@ const Blog = () => {
     const [commentMessage, setCommentMessage] = useState('')
     const navigate = useNavigate()
     const queryClient = useQueryClient()
+
+    if(!user){
+        return <Navigate to={"/"}/>
+    }
     
     const { id: blogId } = useParams()
     const fetchBlog = async () => {
