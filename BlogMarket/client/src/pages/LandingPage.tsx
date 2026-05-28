@@ -36,7 +36,7 @@ const LandingPage = () => {
             <img 
               src={blog.image}
               alt={blog.title} 
-              className="w-[300px] object-contain"
+              className="w-[300px] h-[200px] object-fill"
             />
 
             <div className="flex flex-col gap-1 flex-1">
