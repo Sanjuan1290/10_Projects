@@ -17,6 +17,7 @@ export type Category = {
 
 export type Blog = {
     id: number,
+    userId: number,
     title: string,
     description: string,
     image: string,

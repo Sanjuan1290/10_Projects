@@ -66,7 +66,6 @@ const Header = () => {
                         showMenu && <div className=" absolute w-[120px] top-10 -left-16 bg-black text-gray-50 flex flex-col px-4 py-2 gap-3 justify-center items-start">
                             <NavLink to={'/profile'} className={'hover:text-gray-600 duration-200'}>Profile</NavLink>
                             <NavLink to={'/blog/write'} className={'hover:text-gray-600 duration-200'}>Write</NavLink>
-                            <NavLink to={'/myblogs'} className={'hover:text-gray-600 duration-200'}>My blogs</NavLink>
                             <button onClick={()=>{logoutMutation.mutate()}} className={'hover:text-gray-600 duration-200'}>{logoutMutation.isPending ? 'Logging out...' : 'Logout'}</button>
                         </div>
                     }

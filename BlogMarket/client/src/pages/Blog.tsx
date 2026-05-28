@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import type { Category, Comment, Blog as BlogType} from '../types'
 import useCurrentUser from "../utils/useCurrentUser";
 import { useState } from "react";
@@ -11,6 +11,7 @@ import { useState } from "react";
 const Blog = () => {
     const user = useCurrentUser().data?.user
     const [commentMessage, setCommentMessage] = useState('')
+    const navigate = useNavigate()
     const queryClient = useQueryClient()
     
     const { id: blogId } = useParams()
@@ -71,6 +72,33 @@ const Blog = () => {
         }
     })
 
+    const deleteBlogPost = useMutation({
+        mutationFn: async () => {
+            const res = await fetch(`http://localhost:3000/api/v1/blogs/delete/${blogId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: user.id })
+            })
+
+            const data = await res.json()
+
+            if(!res.ok) {
+                throw new Error(data.message || 'Failed to delete blog.')
+            }
+
+            return data
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['blog', blogId]
+            })
+            
+            navigate('/')
+        }
+    })
+
 
     if(isLoading) return <p>Blog Loading...</p> 
     if(error) return <p>Something went wrong</p>
@@ -79,17 +107,19 @@ const Blog = () => {
     const categories = data?.categories as Category[]
     const comments = data?.comments as Comment[]
 
-
-
-
     return (
         <div className="flex flex-col gap-4 mt-20  px-4">
             
             <div className="flex justify-between">
                 <h1 className="text-2xl font-bold">{blog.title}</h1>
                 <div className="flex">
-                    <FaEdit className="w-5 h-5 hover:text-gray-700 cursor-pointer"/>
-                    <MdDelete className="w-5 h-5 hover:text-gray-700 cursor-pointer"/>
+                    {
+                        user.id === blog.userId && <>
+                            <FaEdit className="w-5 h-5 hover:text-gray-700 cursor-pointer"/>
+                            <MdDelete onClick={() => {deleteBlogPost.mutate()}} className={`${deleteBlogPost.isPending ? 'cursor-wait text-gray-500' : 'cursor-pointer hover:text-gray-700'} w-5 h-5`}/>
+                        </>
+                    }
+                    
                 </div>
             </div>
 
@@ -106,7 +136,7 @@ const Blog = () => {
                 </div>
             </div>
 
-            <img src={blog.image} alt="" className="w-full object-contain"/>
+            <img src={blog.image} alt="" className="w-full h-[500px] object-fill"/>
 
             <p className="text-sm text-justify">{blog.description}</p>
 
