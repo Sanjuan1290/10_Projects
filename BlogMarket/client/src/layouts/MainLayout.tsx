@@ -4,13 +4,16 @@ import Footer from "../components/Footer"
 
 const MainLayout = () => {
   const location = useLocation()
+  console.log(location.pathname);
 
   return (
     <>
         <Header />
         <Outlet />
         {
-          location.pathname !== '/blog/write' && <Footer />
+          location.pathname !== '/blog/write' && 
+          !location.pathname.startsWith('/blog/update') && 
+          <Footer />
         }
         
     </>

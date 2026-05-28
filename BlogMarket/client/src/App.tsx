@@ -6,6 +6,7 @@ import Register from "./pages/Register"
 import UserProtectedRoute from "./auth/UserProtectedRoute"
 import Blog from "./pages/Blog"
 import WriteBlog from "./pages/WriteBlog"
+import UpdateBlog from "./pages/UpdateBlog"
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
         } />
 
         <Route path="/blog/:id" element={<Blog />}/>
+        <Route path="/blog/update/:id" element={<UpdateBlog />}/>
         <Route path="/blog/write" element={<WriteBlog />}/>
     </Route>
   ))

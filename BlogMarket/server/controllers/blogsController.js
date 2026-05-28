@@ -82,3 +82,45 @@ export const deleteBlog = async (req, res) => {
         res.status(500).json({ message: 'Server Error happen while deleting blog'})
     }
 }
+
+export const updateBlog = async (req, res) => {
+    try{
+        const { id } = req.params
+
+        const {
+            title,
+            description,
+            categories,
+            image
+        } = req.body
+
+        await db.query(`
+            UPDATE blogs
+            SET title = ?, description = ?, image = ?
+            WHERE id = ?
+        `, [title, description, image, id])
+
+        await db.query(`
+            DELETE FROM categories
+            WHERE blogId = ?
+        `, [id])
+
+        for(const category of categories){
+            await db.query(`
+                INSERT INTO categories (blogId, category)
+                VALUES (?, ?)
+            `, [id, category])
+        }
+
+        res.status(200).json({
+            message: "Blog updated successfully"
+        })
+
+    } catch(err){
+        console.log(err)
+
+        res.status(500).json({
+            message: "Server error while updating blog"
+        })
+    }
+}

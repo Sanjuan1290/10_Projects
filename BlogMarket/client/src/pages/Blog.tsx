@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 import type { Category, Comment, Blog as BlogType} from '../types'
 import useCurrentUser from "../utils/useCurrentUser";
 import { useState } from "react";
@@ -115,7 +115,7 @@ const Blog = () => {
                 <div className="flex">
                     {
                         user.id === blog.userId && <>
-                            <FaEdit className="w-5 h-5 hover:text-gray-700 cursor-pointer"/>
+                            <NavLink to={`/blog/update/${blogId}`}><FaEdit  className="w-5 h-5 hover:text-gray-700 cursor-pointer"/></NavLink>
                             <MdDelete onClick={() => {deleteBlogPost.mutate()}} className={`${deleteBlogPost.isPending ? 'cursor-wait text-gray-500' : 'cursor-pointer hover:text-gray-700'} w-5 h-5`}/>
                         </>
                     }
