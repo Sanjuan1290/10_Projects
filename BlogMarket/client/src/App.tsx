@@ -7,6 +7,7 @@ import UserProtectedRoute from "./auth/UserProtectedRoute"
 import Blog from "./pages/Blog"
 import WriteBlog from "./pages/WriteBlog"
 import UpdateBlog from "./pages/UpdateBlog"
+import Profile from "./pages/Profile"
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/blog/:id" element={<Blog />}/>
         <Route path="/blog/update/:id" element={<UpdateBlog />}/>
         <Route path="/blog/write" element={<WriteBlog />}/>
+        <Route path="/profile" element={<Profile />}/>
     </Route>
   ))
 

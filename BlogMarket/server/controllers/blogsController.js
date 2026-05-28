@@ -124,3 +124,20 @@ export const updateBlog = async (req, res) => {
         })
     }
 }
+
+export const getUserBlogs = async (req, res) => {
+    const { id: userId } = req.params
+    try{
+        const [rows] = await db.query('SELECT * FROM blogs WHERE userId = ?', [userId])
+        console.log(`RETREIVING ALL BLOG POST FROM A SPECIFIC USER...`)
+        console.log(rows)
+
+        res.status(200).json(rows)
+    } catch(err) {
+        console.log(err)
+
+        res.status(500).json({
+            message: "Server Error while getting all blogs"
+        })
+    }
+}
